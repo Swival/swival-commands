@@ -86,6 +86,9 @@ For each accepted finding:
 - Preserve intended behavior outside the bug.
 - Prefer local, minimal, deterministic fixes over broad refactors.
 - If multiple fixes are possible, choose the one with the strongest correctness argument and lowest regression risk.
+- Match the repository's existing formatting and code conventions by inspecting the touched files and nearby tracked code before finalizing the fix.
+- Determine the repository's reference branch from tracked Git metadata when available (for example the default remote HEAD or the current branch's upstream base), and ensure the patch is generated against that committed reference-branch state rather than against local uncommitted changes.
+- Before accepting the fix, verify that the patch applies cleanly to the reference branch's committed contents and that any available repository formatter, linter, or style checks relevant to the touched files still pass. If no explicit tooling exists, enforce the conventions you observed in nearby tracked code.
 - After accepting a finding and designing its fix, resume the audit and continue reviewing the remaining tracked source files before finalizing output.
 
 PHASE 5: ARTIFACT GENERATION
@@ -149,6 +152,8 @@ PATCH FORMAT
 - Create a standard unified diff patch.
 - Patch must be minimal and directly applicable.
 - Patch must fix only the reported bug unless a tightly coupled change is necessary.
+- Patch must match the formatting and local conventions of the touched tracked files.
+- Patch must apply cleanly to the committed contents of the determined reference branch.
 - Do not include opportunistic cleanup.
 
 NAMING
@@ -174,6 +179,8 @@ For each finding, verify all are true:
 - I can prove impact.
 - I can explain the violated invariant.
 - I can justify the fix as required and correct.
+- The patch matches the repository's observed formatting and conventions.
+- The patch applies cleanly to the committed contents of the determined reference branch.
 - I am not relying on untracked files.
 - I am not speculating.
 If any check fails, discard the finding or continue auditing until the missing review coverage is complete.
