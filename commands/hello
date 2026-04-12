@@ -1,0 +1,7 @@
+#! /bin/sh
+
+cat <<'EOT'
+Reply with exactly this sentence:
+
+Hello from swival-commands.
+EOT
