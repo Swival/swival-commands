@@ -128,6 +128,8 @@ Good use cases:
 
 ### `audit`
 
+*** Superseded by the `/audit` built-in command since Swival 1.0.3 ***
+
 A whole-repository logic and security audit prompt.
 
 This is for situations where you want Swival to inspect an entire repository and only report findings it can actually prove from the code. If it finds real issues, it is instructed to produce one markdown report and one patch file per finding in `audit-findings/`.
@@ -145,6 +147,8 @@ Good use cases:
 - Running a strict audit instead of asking for broad suggestions
 
 ### `audit-c`
+
+*** Superseded by the `/audit` built-in command since Swival 1.0.3 ***
 
 A stricter audit prompt for C projects.
 
