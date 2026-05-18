@@ -46,6 +46,10 @@ Make the script-based commands executable:
 ```sh
 chmod +x ~/.config/swival/commands/hello
 chmod +x ~/.config/swival/commands/pr-review
+chmod +x ~/.config/swival/commands/commit
+chmod +x ~/.config/swival/commands/explain
+chmod +x ~/.config/swival/commands/test
+chmod +x ~/.config/swival/commands/changes
 ```
 
 That is it. Swival will pick them up by filename, so `commands/hello` becomes `! hello`, `commands/audit` becomes `! audit`, and so on.
@@ -170,7 +174,7 @@ Good use cases:
 
 This repo currently contains both styles:
 
-- Executable scripts: `hello`, `pr-review`
+- Executable scripts: `hello`, `pr-review`, `commit`, `explain`, `test`, `changes`
 - Text prompt files: `audit`, `audit-c`
 
 That difference matters mostly when you install them:
@@ -220,6 +224,111 @@ Then:
 ```text
 ! audit-c
 ```
+
+### 5. Generate a commit message
+
+Stage your changes, then:
+
+```sh
+swival --oneshot-commands "! commit"
+```
+
+### 6. Explain a file
+
+```sh
+swival --oneshot-commands "! explain src/parser.ts"
+```
+
+### 7. Write tests for a module
+
+```sh
+swival --oneshot-commands "! test lib/auth.py"
+```
+
+### 8. Generate release notes
+
+```sh
+swival --oneshot-commands "! changes"
+```
+
+### `commit`
+
+A commit message generator that analyzes your staged changes and writes a clear, well-structured commit message.
+
+This command reads your staged diff, understands the intent of the change, and produces a commit message following conventional commit style. If your changes should be split into multiple commits, it will tell you.
+
+Example:
+
+```text
+! commit
+```
+
+Good use cases:
+
+- Writing clear commit messages instead of "fix stuff" or "wip"
+- Making sure commit messages match the project's existing style
+- Getting a second opinion before committing a large change
+- Learning what a good commit message looks like for your changes
+
+### `explain`
+
+A code explanation assistant that reads a file or directory and produces a thorough explanation of what the code does.
+
+This is for situations where you need to understand unfamiliar code quickly. It reads the target, traces the logic, identifies patterns, and explains the code in clear prose.
+
+Example:
+
+```text
+! explain src/parser.ts
+! explain lib/utils
+```
+
+Good use cases:
+
+- Onboarding to a new codebase or unfamiliar module
+- Understanding code you have not touched in a long time
+- Preparing documentation or knowledge sharing for your team
+- Reviewing a file before making changes to it
+
+### `test`
+
+A test-writing assistant that reads a source file and writes thorough, useful tests for it.
+
+This command analyzes the code, identifies the public interface, chooses appropriate test strategies, and writes a complete test file. It follows the testing conventions already used in your project when possible.
+
+Example:
+
+```text
+! test src/parser.ts
+! test lib/auth.py
+```
+
+Good use cases:
+
+- Adding tests to existing code that has none
+- Getting a starting point for test coverage on a new module
+- Identifying edge cases you might not have thought of
+- Learning testing patterns for a language or framework you are less familiar with
+
+### `changes`
+
+A changelog and release notes generator that summarizes recent changes in your repository.
+
+This command reads your git history, classifies every change, and produces an organized summary in changelog format. It respects the existing changelog style if your project has one.
+
+Example:
+
+```text
+! changes
+! changes v1.0.0..HEAD
+```
+
+Good use cases:
+
+- Writing release notes before publishing a new version
+- Summarizing what changed for a team update or standup
+- Preparing a CHANGELOG entry after a sprint
+- Auditing what went into a release branch
 
 ## Adding more commands later
 

@@ -1,5 +1,12 @@
 #! /bin/sh
 
+if [ -z "$2" ]; then
+    printf 'Usage: ! pr-review <pull-request-number-or-url>\n'
+    printf 'Example: ! pr-review 42\n'
+    printf 'Example: ! pr-review https://github.com/owner/repo/pull/42\n'
+    exit 0
+fi
+
 printf 'Use this as the agent prompt:\n\n'
 printf 'The pull request reference provided by the user is: %s\n\n' "$2"
 cat <<'EOT'

@@ -1,6 +1,6 @@
 ## Workflow
 
-- install: `mkdir -p ~/.config/swival/commands && cp commands/* ~/.config/swival/commands/ && chmod +x ~/.config/swival/commands/hello && chmod +x ~/.config/swival/commands/pr-review`
+- install: `mkdir -p ~/.config/swival/commands && cp commands/* ~/.config/swival/commands/ && chmod +x ~/.config/swival/commands/hello && chmod +x ~/.config/swival/commands/pr-review && chmod +x ~/.config/swival/commands/commit && chmod +x ~/.config/swival/commands/explain && chmod +x ~/.config/swival/commands/test && chmod +x ~/.config/swival/commands/changes`
 - test all: `swival --oneshot-commands "! hello"`
 - test file: `swival --oneshot-commands "! <command_name>"`
 - test case: `swival --oneshot-commands "! <command_name> <arg>"`
@@ -14,6 +14,7 @@
 - This repo mixes executable POSIX `sh` commands and plain text prompt/spec files; preserve that distinction when adding or installing commands.
 - Larger prompt/spec commands use explicit sectioned instructions with named phases instead of short freeform prompts.
 
+- The swival source code is in ~/src/swival
 ## Commit & Pull Request Guidelines
 
 Use short, capitalized, imperative commit subjects with no scope prefix or ticket tag. Recent examples: `Add a README.md file`, `Import`, `Init`.
