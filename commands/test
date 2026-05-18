@@ -1,8 +1,8 @@
 #! /bin/sh
 
 if [ -z "$2" ]; then
-    printf 'Usage: ! test <file>\n'
-    printf 'Example: ! test src/parser.ts\n'
+    printf 'Usage: !test <file>\n'
+    printf 'Example: !test src/parser.ts\n'
     exit 0
 fi
 

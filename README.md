@@ -2,7 +2,7 @@
 
 A small collection of user-contributed commands for [Swival](https://swival.dev).
 
-These commands are meant to be installed into `~/.config/swival/commands/` and used with `! command_name` inside Swival.
+These commands are meant to be installed into `~/.config/swival/commands/` and used with `!command_name` inside Swival.
 
 Some commands in this repo are executable scripts. When you invoke them, Swival runs the script and uses its output. Others are plain text prompt files. When you invoke those, Swival injects the file contents into the prompt it sends to the model.
 
@@ -50,9 +50,13 @@ chmod +x ~/.config/swival/commands/commit
 chmod +x ~/.config/swival/commands/explain
 chmod +x ~/.config/swival/commands/test
 chmod +x ~/.config/swival/commands/changes
+chmod +x ~/.config/swival/commands/debug
+chmod +x ~/.config/swival/commands/refactor
+chmod +x ~/.config/swival/commands/docs
+chmod +x ~/.config/swival/commands/ci
 ```
 
-That is it. Swival will pick them up by filename, so `commands/hello` becomes `! hello`, `commands/audit` becomes `! audit`, and so on.
+That is it. Swival will pick them up by filename, so `commands/hello` becomes `!hello`, `commands/debug` becomes `!debug`, and so on.
 
 ## How to use commands
 
@@ -67,14 +71,14 @@ swival
 Then call a command by typing `!` followed by the filename:
 
 ```text
-! hello
+!hello
 ```
 
 You can also pass arguments to script-based commands:
 
 ```text
-! pr-review 123
-! pr-review https://github.com/owner/repo/pull/123
+!pr-review 123
+!pr-review https://github.com/owner/repo/pull/123
 ```
 
 ### In one-shot mode
@@ -82,13 +86,13 @@ You can also pass arguments to script-based commands:
 If you want to use `!` commands without starting a full interactive session, enable one-shot command dispatch:
 
 ```sh
-swival --oneshot-commands "! hello"
+swival --oneshot-commands "!hello"
 ```
 
 A more practical example:
 
 ```sh
-swival --oneshot-commands "! pr-review https://github.com/owner/repo/pull/123"
+swival --oneshot-commands "!pr-review https://github.com/owner/repo/pull/123"
 ```
 
 ## Included commands
@@ -102,7 +106,7 @@ Use it when you want to confirm that your command installation is working.
 Example:
 
 ```text
-! hello
+!hello
 ```
 
 Expected behavior: Swival replies with exactly:
@@ -120,8 +124,8 @@ This command builds a detailed review prompt for Swival. You give it a pull requ
 Examples:
 
 ```text
-! pr-review 42
-! pr-review https://github.com/owner/repo/pull/42
+!pr-review 42
+!pr-review https://github.com/owner/repo/pull/42
 ```
 
 Good use cases:
@@ -130,137 +134,16 @@ Good use cases:
 - Getting a second opinion on a teammate's PR
 - Checking whether discussion threads were actually addressed
 
-### `audit`
-
-*** Superseded by the `/audit` built-in command since Swival 1.0.3 ***
-
-A whole-repository logic and security audit prompt.
-
-This is for situations where you want Swival to inspect an entire repository and only report findings it can actually prove from the code. If it finds real issues, it is instructed to produce one markdown report and one patch file per finding in `audit-findings/`.
-
-Example:
-
-```text
-! audit
-```
-
-Good use cases:
-
-- Sanity-checking a codebase before release
-- Looking for real logic bugs, trust-boundary mistakes, and data integrity issues
-- Running a strict audit instead of asking for broad suggestions
-
-### `audit-c`
-
-*** Superseded by the `/audit` built-in command since Swival 1.0.3 ***
-
-A stricter audit prompt for C projects.
-
-This command is like `audit`, but specialized for C code. It pushes Swival to look for memory-safety bugs, undefined behavior, ownership mistakes, integer issues, and other C-specific correctness failures.
-
-Example:
-
-```text
-! audit-c
-```
-
-Good use cases:
-
-- Auditing C or mixed C codebases
-- Looking for out-of-bounds access, lifetime bugs, and UB with concrete impact
-- Getting patch-oriented findings instead of generic code review notes
-
-## Executable commands vs text commands
-
-This repo currently contains both styles:
-
-- Executable scripts: `hello`, `pr-review`, `commit`, `explain`, `test`, `changes`
-- Text prompt files: `audit`, `audit-c`
-
-That difference matters mostly when you install them:
-
-- Scripts should be executable with `chmod +x`
-- Text files can be copied as-is
-
-From the user's point of view, they are invoked the same way with `! command_name`.
-
-## Practical examples
-
-A few realistic ways you might use this repo:
-
-### 1. Check that command loading works
-
-```sh
-swival --oneshot-commands "! hello"
-```
-
-### 2. Review a pull request from the terminal
-
-```sh
-swival --oneshot-commands "! pr-review https://github.com/owner/repo/pull/87"
-```
-
-### 3. Open Swival and run an audit interactively
-
-```sh
-swival
-```
-
-Then:
-
-```text
-! audit
-```
-
-### 4. Audit a C project
-
-```sh
-cd ~/src/some-c-project
-swival
-```
-
-Then:
-
-```text
-! audit-c
-```
-
-### 5. Generate a commit message
-
-Stage your changes, then:
-
-```sh
-swival --oneshot-commands "! commit"
-```
-
-### 6. Explain a file
-
-```sh
-swival --oneshot-commands "! explain src/parser.ts"
-```
-
-### 7. Write tests for a module
-
-```sh
-swival --oneshot-commands "! test lib/auth.py"
-```
-
-### 8. Generate release notes
-
-```sh
-swival --oneshot-commands "! changes"
-```
-
 ### `commit`
 
 A commit message generator that analyzes your staged changes and writes a clear, well-structured commit message.
 
-This command reads your staged diff, understands the intent of the change, and produces a commit message following conventional commit style. If your changes should be split into multiple commits, it will tell you.
+This command reads your staged diff, understands the intent of the change, and produces a commit message that matches the project's existing style when history is available. If your changes should be split into multiple commits, it will tell you.
 
 Example:
 
 ```text
-! commit
+!commit
 ```
 
 Good use cases:
@@ -279,8 +162,8 @@ This is for situations where you need to understand unfamiliar code quickly. It 
 Example:
 
 ```text
-! explain src/parser.ts
-! explain lib/utils
+!explain src/parser.ts
+!explain lib/utils
 ```
 
 Good use cases:
@@ -299,8 +182,8 @@ This command analyzes the code, identifies the public interface, chooses appropr
 Example:
 
 ```text
-! test src/parser.ts
-! test lib/auth.py
+!test src/parser.ts
+!test lib/auth.py
 ```
 
 Good use cases:
@@ -319,8 +202,8 @@ This command reads your git history, classifies every change, and produces an or
 Example:
 
 ```text
-! changes
-! changes v1.0.0..HEAD
+!changes
+!changes v1.0.0..HEAD
 ```
 
 Good use cases:
@@ -329,6 +212,163 @@ Good use cases:
 - Summarizing what changed for a team update or standup
 - Preparing a CHANGELOG entry after a sprint
 - Auditing what went into a release branch
+
+### `debug`
+
+A root-cause debugging assistant for bugs, failing tests, and broken commands.
+
+This command pushes Swival to reproduce the failure, localize the cause, make the smallest correct fix, add or update tests when useful, and verify the result.
+
+Example:
+
+```text
+!debug npm test fails in auth.spec.ts
+!debug login redirects loop after token refresh
+```
+
+Good use cases:
+
+- Turning a failing test or command into a concrete fix
+- Investigating regressions without jumping to a workaround
+- Explaining the actual root cause after a bug is fixed
+- Keeping verification tied to the original failure
+
+### `refactor`
+
+A scoped refactoring assistant for behavior-preserving cleanup.
+
+This command asks Swival to define the refactor boundary, read call sites and tests, preserve public contracts, avoid unrelated cleanup, and report how unchanged behavior was verified.
+
+Example:
+
+```text
+!refactor simplify src/cache.ts without changing behavior
+!refactor split the payment parser into smaller functions
+```
+
+Good use cases:
+
+- Making complex code easier to read before adding a feature
+- Removing duplication while keeping behavior stable
+- Improving testability without changing public APIs
+- Keeping refactor diffs focused and reviewable
+
+### `docs`
+
+A documentation assistant that writes or updates docs from repository evidence.
+
+This command makes Swival read the source of truth first, choose the right documentation shape, avoid invented claims, and verify commands, paths, options, and examples.
+
+Example:
+
+```text
+!docs document the plugin configuration flow
+!docs update README setup steps for Docker
+```
+
+Good use cases:
+
+- Adding practical setup or usage documentation
+- Updating stale docs after a feature change
+- Creating reference material from implementation details
+- Writing examples that match real project commands
+
+### `ci`
+
+A CI and validation triage assistant.
+
+This command focuses Swival on the failing job, script, log, or validation command. It classifies whether the cause is code, tests, tooling, environment, dependency drift, configuration, or flakiness before making a minimal fix.
+
+Example:
+
+```text
+!ci pytest fails on Python 3.12 in GitHub Actions
+!ci npm run lint fails only in CI
+```
+
+Good use cases:
+
+- Diagnosing broken GitHub Actions, GitLab CI, or local validation scripts
+- Separating product regressions from infrastructure failures
+- Fixing toolchain and dependency mismatches safely
+- Avoiding lazy fixes that skip or weaken useful checks
+
+## Executable commands vs text commands
+
+This repo can contain both styles:
+
+- Executable scripts print a prompt dynamically and can validate arguments before Swival sees it.
+- Text prompt files are copied as-is and injected directly into the Swival prompt.
+
+All currently checked-in commands are executable scripts. If you add text prompt files later, copy them as-is and only run `chmod +x` for scripts.
+
+From the user's point of view, both styles are invoked the same way with `!command_name`.
+
+## Practical examples
+
+A few realistic ways you might use this repo:
+
+### 1. Check that command loading works
+
+```sh
+swival --oneshot-commands "!hello"
+```
+
+### 2. Review a pull request from the terminal
+
+```sh
+swival --oneshot-commands "!pr-review https://github.com/owner/repo/pull/87"
+```
+
+### 3. Generate a commit message
+
+Stage your changes, then:
+
+```sh
+swival --oneshot-commands "!commit"
+```
+
+### 4. Explain a file
+
+```sh
+swival --oneshot-commands "!explain src/parser.ts"
+```
+
+### 5. Write tests for a module
+
+```sh
+swival --oneshot-commands "!test lib/auth.py"
+```
+
+### 6. Generate release notes
+
+```sh
+swival --oneshot-commands "!changes"
+```
+
+### 7. Debug a failing command
+
+```sh
+swival --oneshot-commands "!debug npm test fails in auth.spec.ts"
+```
+
+### 8. Refactor a module safely
+
+```sh
+swival --oneshot-commands "!refactor simplify src/cache.ts without changing behavior"
+```
+
+### 9. Update documentation from code
+
+```sh
+swival --oneshot-commands "!docs document the plugin configuration flow"
+```
+
+### 10. Triage a CI failure
+
+```sh
+swival --oneshot-commands "!ci pytest fails on Python 3.12 in GitHub Actions"
+```
 
 ## Adding more commands later
 
@@ -339,13 +379,13 @@ That means future additions stay easy to understand:
 - browse `commands/`
 - copy the files you want
 - make scripts executable if needed
-- run them with `! name`
+- run them with `!name`
 
 You do not need a plugin manager or a special packaging step.
 
 ## Troubleshooting
 
-If `! hello` does not work, check these first:
+If `!hello` does not work, check these first:
 
 - the files are in `~/.config/swival/commands/`
 - script commands are executable

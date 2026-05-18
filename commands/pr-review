@@ -1,9 +1,9 @@
 #! /bin/sh
 
 if [ -z "$2" ]; then
-    printf 'Usage: ! pr-review <pull-request-number-or-url>\n'
-    printf 'Example: ! pr-review 42\n'
-    printf 'Example: ! pr-review https://github.com/owner/repo/pull/42\n'
+    printf 'Usage: !pr-review <pull-request-number-or-url>\n'
+    printf 'Example: !pr-review 42\n'
+    printf 'Example: !pr-review https://github.com/owner/repo/pull/42\n'
     exit 0
 fi
 

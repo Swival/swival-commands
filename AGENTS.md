@@ -1,12 +1,12 @@
 ## Workflow
 
-- install: `mkdir -p ~/.config/swival/commands && cp commands/* ~/.config/swival/commands/ && chmod +x ~/.config/swival/commands/hello && chmod +x ~/.config/swival/commands/pr-review && chmod +x ~/.config/swival/commands/commit && chmod +x ~/.config/swival/commands/explain && chmod +x ~/.config/swival/commands/test && chmod +x ~/.config/swival/commands/changes`
-- test all: `swival --oneshot-commands "! hello"`
-- test file: `swival --oneshot-commands "! <command_name>"`
-- test case: `swival --oneshot-commands "! <command_name> <arg>"`
+- install: `mkdir -p ~/.config/swival/commands && cp commands/* ~/.config/swival/commands/ && chmod +x ~/.config/swival/commands/hello && chmod +x ~/.config/swival/commands/pr-review && chmod +x ~/.config/swival/commands/commit && chmod +x ~/.config/swival/commands/explain && chmod +x ~/.config/swival/commands/test && chmod +x ~/.config/swival/commands/changes && chmod +x ~/.config/swival/commands/debug && chmod +x ~/.config/swival/commands/refactor && chmod +x ~/.config/swival/commands/docs && chmod +x ~/.config/swival/commands/ci`
+- test all: `swival --oneshot-commands "!hello"`
+- test file: `swival --oneshot-commands "!<command_name>"`
+- test case: `swival --oneshot-commands "!<command_name> <arg>"`
 - lint: `:`
 - format: `:`
-- after every edit: `swival --oneshot-commands "! hello"`
+- after every edit: `swival --oneshot-commands "!hello"`
 
 ## Conventions
 
