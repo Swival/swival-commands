@@ -569,3 +569,5 @@ Provide:
 In all outcomes, do not present unverified candidates as vulnerabilities. Confidence language is acceptable only for triage and rejected-candidate notes, never as a substitute for proof in final findings.
 
 Begin by establishing scope, then run Phase 1.
+
+Use parallel subagents.
