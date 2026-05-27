@@ -58,6 +58,8 @@ chmod +x ~/.config/swival/commands/docs
 chmod +x ~/.config/swival/commands/ci
 ```
 
+The `audit-light` command is a plain text prompt file and does not need to be made executable.
+
 That is it. Swival will pick them up by filename, so `commands/hello` becomes `!hello`, `commands/debug` becomes `!debug`, and so on.
 
 ## How to use commands
@@ -315,6 +317,28 @@ Good use cases:
 - Creating reference material from implementation details
 - Writing examples that match real project commands
 
+### `audit-light`
+
+A lightweight, static-prompt counterpart to Swival's built-in `/audit` command.
+
+Where `/audit` is a fully orchestrated, multi-stage security audit, `audit-light` is a single prompt that asks the model to run the same staged, evidence-based audit in one shot: profile the repository, triage files by attack surface, deep-review only the ones with credible risk, treat every candidate finding as a hypothesis that must be verified against the actual code, and produce reviewer-ready reports with minimal patches for the bugs it can reproduce. It is cheaper and faster than `/audit`, and is meant for quick passes rather than full audits. It is strict about scope and will reject defense-in-depth, style, missing-test, and correctness-only issues.
+
+Example:
+
+```text
+!audit-light
+!audit-light focus on src/auth and src/parser
+```
+
+Good use cases:
+
+- A quick security pass on a module before shipping it, without the cost of a full `/audit` run
+- Getting a fast second opinion on a security-sensitive change
+- Triaging a repository you are not yet familiar with for obvious vulnerabilities
+- Producing minimal, evidence-backed fixes instead of broad speculative hardening
+
+If you need a deeper, more rigorous review, use Swival's built-in `/audit` command instead.
+
 ### `ci`
 
 A CI and validation triage assistant.
@@ -342,7 +366,7 @@ This repo can contain both styles:
 - Executable scripts print a prompt dynamically and can validate arguments before Swival sees it.
 - Text prompt files are copied as-is and injected directly into the Swival prompt.
 
-All currently checked-in commands are executable scripts. If you add text prompt files later, copy them as-is and only run `chmod +x` for scripts.
+Most checked-in commands are executable scripts. `audit-light` is a plain text prompt file. If you add more text prompt files later, copy them as-is and only run `chmod +x` for scripts.
 
 From the user's point of view, both styles are invoked the same way with `!command_name`.
 
@@ -422,6 +446,12 @@ swival --oneshot-commands "!pr-review2 https://github.com/owner/repo/pull/87"
 
 ```sh
 swival --oneshot-commands "!issue-respond https://github.com/owner/repo/issues/42"
+```
+
+### 13. Run a focused security audit
+
+```sh
+swival --oneshot-commands "!audit-light focus on src/auth"
 ```
 
 ## Adding more commands later
