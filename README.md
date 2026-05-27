@@ -46,6 +46,8 @@ Make the script-based commands executable:
 ```sh
 chmod +x ~/.config/swival/commands/hello
 chmod +x ~/.config/swival/commands/pr-review
+chmod +x ~/.config/swival/commands/pr-review2
+chmod +x ~/.config/swival/commands/issue-respond
 chmod +x ~/.config/swival/commands/commit
 chmod +x ~/.config/swival/commands/explain
 chmod +x ~/.config/swival/commands/test
@@ -133,6 +135,46 @@ Good use cases:
 - Reviewing your own PR before asking for human feedback
 - Getting a second opinion on a teammate's PR
 - Checking whether discussion threads were actually addressed
+
+### `pr-review2`
+
+A stricter pull request review variant intended for PRs opened by bots or contributors who are unfamiliar with the project.
+
+This command builds the same kind of review prompt as `pr-review`, but starts from the assumption that the change is likely wrong and pushes Swival to verify every claim carefully against the repository. If the PR is not worth merging, it will say so and close it.
+
+Examples:
+
+```text
+!pr-review2 42
+!pr-review2 https://github.com/owner/repo/pull/42
+```
+
+Good use cases:
+
+- Triaging AI-generated pull requests that touch unfamiliar areas of the project
+- Filtering drive-by contributions that do not match local conventions
+- Catching plausible-looking changes that do not actually fit the project
+- Closing low-value PRs with a clear, kind explanation
+
+### `issue-respond`
+
+An autonomous GitHub issue response assistant.
+
+Give it an issue number or a full issue URL, and it instructs Swival to read the report, check the repository, search prior issues and pull requests, consult the documentation, and post a thoughtful reply on the issue using `gh`. If the issue turns out to be a duplicate, already fixed, out of scope, or clearly not actionable, the command will also close it.
+
+Examples:
+
+```text
+!issue-respond 42
+!issue-respond https://github.com/owner/repo/issues/42
+```
+
+Good use cases:
+
+- Triaging incoming issues on a project that gets more reports than maintainers can handle
+- Pointing reporters at existing documentation or prior threads that already cover their question
+- Asking for missing reproduction details in a precise, friendly way
+- Confirming real bugs with concrete file and line references before maintainers look at them
 
 ### `commit`
 
@@ -368,6 +410,18 @@ swival --oneshot-commands "!docs document the plugin configuration flow"
 
 ```sh
 swival --oneshot-commands "!ci pytest fails on Python 3.12 in GitHub Actions"
+```
+
+### 11. Review a suspicious bot-authored PR
+
+```sh
+swival --oneshot-commands "!pr-review2 https://github.com/owner/repo/pull/87"
+```
+
+### 12. Respond to a GitHub issue
+
+```sh
+swival --oneshot-commands "!issue-respond https://github.com/owner/repo/issues/42"
 ```
 
 ## Adding more commands later
