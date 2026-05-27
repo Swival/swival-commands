@@ -382,6 +382,14 @@ A candidate may be narrowed during verification if the original claim is too bro
 
 Generate artifacts only for `REPRODUCED` findings.
 
+Before writing any artifact, create a fresh `audit-findings/` directory at the repository root. If one already exists from a prior run, do not silently overwrite it: either move it aside (e.g. `audit-findings.<timestamp>/`) or remove it only after confirming with the user. Every artifact produced in this phase — per-finding markdown reports, unified-diff patch files, and the findings index — must live inside this directory. Do not scatter audit outputs elsewhere in the tree.
+
+Use a stable, predictable layout inside `audit-findings/`:
+
+- `audit-findings/README.md` — the findings index (see template below).
+- `audit-findings/<NNN>-<short-slug>.md` — one report per verified finding, numbered to match the index (e.g. `001-jwt-audience-bypass.md`).
+- `audit-findings/<NNN>-<short-slug>.patch` — the unified diff for that finding.
+
 For each verified finding:
 
 1. Create a minimal patch that fixes the root cause.
@@ -389,10 +397,10 @@ For each verified finding:
 3. Add or update tests when the repository has a relevant test structure and the test can safely demonstrate the security regression.
 4. Avoid broad refactors, unrelated cleanup, formatting churn, dependency upgrades, or speculative hardening.
 5. Run the narrowest relevant tests or validation commands available.
-6. Capture a unified diff.
-7. Write a structured markdown report.
+6. Capture a unified diff and save it as `audit-findings/<NNN>-<short-slug>.patch`. Do not apply the patch to the working tree.
+7. Write a structured markdown report to `audit-findings/<NNN>-<short-slug>.md` and reference the patch file from the report's Patch section.
 
-If tools are unavailable, provide a patch-style diff based on the supplied evidence and state that it is untested.
+If tools are unavailable, still produce the same files under `audit-findings/` and state in each report that the patch is untested.
 
 ### Patch Rules
 
@@ -445,7 +453,7 @@ For each verified finding, produce:
 
 ### Findings Index Template
 
-At the end of the audit, provide an index:
+At the end of the audit, write the index to `audit-findings/README.md`. Link each row's title to the corresponding report file and the `Patch` column to the corresponding `.patch` file (use relative paths within `audit-findings/`).
 
 ```markdown
 # Security Audit
@@ -539,13 +547,14 @@ Your final response must contain exactly one of these outcomes:
 
 ### Outcome A — Verified Findings Exist
 
-Provide:
+Write all artifacts to the `audit-findings/` directory as described in Phase 5, then in the chat reply provide:
 
-1. Findings index.
-2. One report per finding using the report template.
-3. Patch diffs or patch file references.
-4. Verification evidence and tests run.
-5. Incomplete items or limitations.
+1. The path to `audit-findings/README.md` and a short summary of what it contains.
+2. The list of per-finding report and patch files created under `audit-findings/`.
+3. Verification evidence and tests run.
+4. Incomplete items or limitations.
+
+Do not paste the full report bodies or full patch diffs back into the chat reply — they live in the files. A brief one-line summary per finding is enough.
 
 ### Outcome B — No Findings
 
