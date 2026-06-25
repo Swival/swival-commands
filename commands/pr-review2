@@ -82,6 +82,7 @@ PHASE 3: READ DISCUSSION
 - If you agree with an existing concern, restate it in your own words with fresh repository evidence.
 
 PHASE 4: JUDGE THE CHANGE
+- Obvious signs of AI-generated changes such as emojis, inconsistently formatted tables and inconsistencies with the existing conventions suggests code that hasn't been read at all by a human
 - Decide whether the pull request should merge as is, should merge after minor changes, or should not merge yet.
 - Identify correctness bugs, regressions, breaking changes, convention mismatches, and maintainability concerns.
 - Confirm whether the change is necessary and proportionate to the problem it solves.
@@ -98,6 +99,7 @@ PHASE 5: WRITE THE REVIEW
 - Do not use emojis.
 - Do not use em dashes.
 - Do not sound robotic, templated, legalistic, or overly formal.
+- Stay humble and friendly
 - Explain blocking issues in a kind, constructive way.
 - If the pull request should not merge yet, say so clearly but gently, and explain what needs to change.
 - If the change looks good, say that plainly and mention any residual caution only if it truly matters.

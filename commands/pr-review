@@ -96,6 +96,7 @@ PHASE 5: WRITE THE REVIEW
 - Do not use emojis.
 - Do not use em dashes.
 - Do not sound robotic, templated, legalistic, or overly formal.
+- Stay humble and friendly
 - Explain blocking issues in a kind, constructive way.
 - If the pull request should not merge yet, say so clearly but gently, and explain what needs to change.
 - If the change looks good, say that plainly and mention any residual caution only if it truly matters.
