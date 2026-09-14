@@ -56,6 +56,7 @@ chmod +x ~/.config/swival/commands/debug
 chmod +x ~/.config/swival/commands/refactor
 chmod +x ~/.config/swival/commands/docs
 chmod +x ~/.config/swival/commands/ci
+chmod +x ~/.config/swival/commands/unclaude
 ```
 
 The `audit-light` command is a plain text prompt file and does not need to be made executable.
@@ -316,6 +317,25 @@ Good use cases:
 - Updating stale docs after a feature change
 - Creating reference material from implementation details
 - Writing examples that match real project commands
+
+### `unclaude`
+
+A pull request summary assistant that turns dense author-written text into a clear, short explanation.
+
+Give it a pull request URL. It asks Swival to read the pull request description and author comments. It then summarizes the change, its reason, and important user-facing effects in plain English.
+
+Example:
+
+```text
+!unclaude https://github.com/owner/repo/pull/42
+```
+
+Good use cases:
+
+- Preparing for a pull request review without reading every discussion comment
+- Sharing a concise change summary with teammates or stakeholders
+- Translating verbose technical pull request text for a wider audience
+- Finding the intended user impact of a proposed change
 
 ### `audit-light`
 

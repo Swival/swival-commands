@@ -1,0 +1,18 @@
+#! /bin/sh
+
+if [ -z "$2" ]; then
+    printf 'Usage: !unclaude <url>\n'
+    printf 'Example: !unclaude https://github.com/example/example-pr\n'
+    exit 0
+fi
+
+printf 'Read the pull request description and author comments at ' "$1".
+
+cat <<'EOT'
+Understand the context and the intent, then write a short, clear summary of:
+- what the change does or what the actual issue is;
+- why the this is needed; and
+- any important user-facing effect.
+
+Use plain, common English and short sentences. Avoid jargon, unnecessary internal details, and overly verbose language.
+EOT
